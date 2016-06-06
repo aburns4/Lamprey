@@ -36,7 +36,7 @@ t=zeros(1,N-1);
 for i=1:(N-1)
     %Use allToAll function for all to all coupling
     %Use nearestNeighbor function for nearest neighbor coupling
-    [temp,STRENGTH]=allToAll(t(i),theta(:,i),n,w,forcingTheta(:,i),forcingOmega,alphaf);
+    [temp,STRENGTH]=allToall(t(i),theta(:,i),n,w,forcingTheta(:,i),forcingOmega,alphaf);
     forcingTheta(:,i+1)=forcingTheta(:,i)+dt*forcingOmega;
 %    %Plot the surface with connection distance
 %     if(mod(i,30)==0)
