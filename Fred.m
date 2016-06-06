@@ -14,7 +14,7 @@ lambda_d = 20;
 theta0 = [0:-1/n:-1+1/n 0];
 
 
-[T,Y] = ode45(@oscRHS,[0 30],theta0,[],n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d);
+[T,Y] = ode45(@oscRHS,[0 10],theta0,[],n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d);
 toc
 %plot(T,sin(2*pi*Y))
 
