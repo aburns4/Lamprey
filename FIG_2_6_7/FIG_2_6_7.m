@@ -1,3 +1,6 @@
+close all
+clear all
+clc
 % This code computes certain properties of a 'network-based' segmental
 % oscillator model of the lamprey spinal chord proposed by [Williams, 1990].
 %

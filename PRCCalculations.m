@@ -2,7 +2,7 @@ clear all
 close all
 clc
 
-ves=0.005:0.005:0.07; %%Range of tonic drivers%% % This is eE
+ves=[0.005 0.0075 0.01 0.02 0.04 0.06 0.07]; %%Range of tonic drivers%% % This is eE
 
 cycle_period = 2*pi; %%Cycle period%%
 

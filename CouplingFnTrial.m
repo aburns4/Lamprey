@@ -101,6 +101,7 @@ for i = 1:length(ves)
     title({'FIG. 2, tonic drive =' ve});
     hold off;
     
+
     dfi=fi{i}(2)-fi{i}(1);
     dt=dfi/(2*pi/TT);
     y=interp1(fi0,y0,fi{i},'spline');

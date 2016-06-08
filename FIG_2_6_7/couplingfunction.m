@@ -17,7 +17,7 @@ function [shift H fi PRC T]=couplingfunction(ve,i,j)
 
 
 %%%%%%%%%%%%%%%%%%%%% PRC
-[fi0 y0 fi PRC T]=PRCdirect(@williams,[.1 0 0 0 0 0 [ve .01 .1]]);
+[fi0 y0 fi PRC T]=PRCdirect(@yourfun,[.1 0 0 0 0 0 [ve .01 .1]]);
 y0=y0(:,1:6);
 fi=fi';
 %%%%%%%%%%%%%%%%%%%%% plotting the dynamics of an oscillator

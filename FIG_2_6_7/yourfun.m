@@ -13,7 +13,6 @@ function da = yourfun(t,a)
     
     %Start calculations
     for i=1:6
-        first=0;
         if(i==1 || i==6)
             first=ve*(vie-a(i))-(taui^-1)*a(i);
         elseif(i==2 || i==5)
@@ -29,7 +28,7 @@ function da = yourfun(t,a)
             else
                 foo=0;
             end
-            second=second+wij(j,i)*foo*(vij(j,i)-a(i));
+            second=wij(j,i)*foo*(vij(j,i)-a(i));
         end
         da(i)=first+second;
     end
