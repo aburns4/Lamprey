@@ -14,7 +14,7 @@ function dy = oscRHS(t,theta,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d,H,s
             end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-             phaseDiff=theta(j)-theta(i);%-(i-j)/n;
+             phaseDiff=theta(j)-theta(i);
              if(phaseDiff<0)
                  phaseDiff=mod(abs(phaseDiff),pi)*-1;
              else
@@ -26,7 +26,7 @@ function dy = oscRHS(t,theta,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d,H,s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             %couplingstr=couplingstr+alpha_k.*sin(theta(j)-theta(i)-(i-j)/n);
         end
-        if i == m
+        if i == m %Forcing position
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
             phaseDiff=theta(n+1)-theta(i);

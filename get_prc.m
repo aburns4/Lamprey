@@ -66,7 +66,7 @@ x0      = [ones(3,n); -ones(3,n)];
 x0      = x0(:);
 x0      = [x0(:);0];
 
-dtn   = 0.0002;      % Simulation time step
+dtn   = 0.02;      % Simulation time step
 t_max = 100;            % Simulation time.
 
 % Simulate without forcing to determine T and the set of voltages over one

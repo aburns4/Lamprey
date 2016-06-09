@@ -6,10 +6,10 @@
 clc
 tic
 n = 5;
-m = 2;
+m = 1;
 alphaf = 0.01;
 omega = 1;
-omegaf = 1.0005;
+omegaf = 1;
 Aa = 0.0004;
 Ad = 0.0002;
 lambda_a = 4;
