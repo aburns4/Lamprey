@@ -118,7 +118,7 @@ for i = 1:length(ves)
     % numerical integration of coupling function
     pert=[];
     HH=[];
-    for kkk=1:length(shift) %phase shift between coupled oscillators
+    for kkk=1:length(shift{i}) %phase shift between coupled oscillators
         for iii=1:3 %the effect of incoming connections of cell i
             for j=1:length(fi{i})-1 %integrating over a period
                 w=abs(conn(iii,:));%outgoing connection strengths of i^th cell
@@ -131,11 +131,13 @@ for i = 1:length(ves)
             end
         end
         
-    end
+    
     %The coupling function is determined from the integral of pert*PRC over
     %a period summed for all elements of the oscillator.
     h=pert.*PPRC(1:end-1,:);
-    HH(k)=2*sum(sum(h)); %'2*' because only perturbations on half of the segment were integrated
+    HH(kkk)=2*sum(sum(h)); %'2*' because only perturbations on half of the segment were integrated
+    
+    end
     
     H{i} = HH
     PRC{i} = PPRC
@@ -169,6 +171,7 @@ for i=1:length(shift)
     title('***********FIGURE 6*************');
     hold on;
 end
+legend('0.005','0.0075','0.01','0.02','0.04','0.06','0.07');
 
 %%%%%%%%%%%%%%%%%stable zeros of coupling function
 disp('calculating roots of copupling functions');
