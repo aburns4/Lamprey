@@ -87,18 +87,23 @@ for i = 1:length(ves)
     y0=y0(:,1:6);
     fi{i}=fi{i}';
     
-    figure(2);
-    if i==1
-        title ('************FIGURE 2*************');
-    end
-    subplot(2,j,i);
+    figure(i);
+    %if i==1
+        title(fprintf('************FIGURE %d*************',i));
+    %end
+    subplot(2,1,1);
     
     hold on;
     plot(fi0,y0(:,1:3));
+    title({'Time Series for E, L, and C Cells with a Tonic Drive of ' ve});
+    xlabel('Phase (\phi)');
+    legend('E Cell','L Cell','C Cell');
     hold off;
-    subplot(2,j,j+i);
+    subplot(2,1,2);
     plot(fi{i},PPRC);
-    title({'FIG. 2, tonic drive =' ve});
+    title({'Phase Response Curve with a Tonic Drive of ' ve});
+    xlabel('Phase (\phi)');
+    legend('E Cell','L Cell','C Cell');
     hold off;
     
 
@@ -165,7 +170,7 @@ for i = 1:length(ves)
     
     
 end
-figure(6);
+figure(10);
 for i=1:length(shift)
     plot(-shift{i},H{i});
     title('***********FIGURE 6*************');
@@ -185,7 +190,7 @@ for i=1:length(shift)
     end
 end
 %%%%%%%%%%%%%%%%%%%%%plotting Fig 7
-figure(7);
+figure(11);
 plot(1./T,-stab,'s-');
 title('***********FIGURE 7*************');
 disp('Ready!');

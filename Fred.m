@@ -1,12 +1,12 @@
-%CouplingFnTrial.m;
+CouplingFnTrial.m;
 
 
 %clear all
 %close all
 clc
 tic
-n = 5;
-m = 1;
+n = 100;
+m = 50;
 alphaf = 0.01;
 omega = 1;
 omegaf = 1;
