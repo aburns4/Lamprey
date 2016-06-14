@@ -1,25 +1,23 @@
-run CouplingFnTrial.m;
 
-
-%clear all
-%close all
+clear all
+close all
 clc
 tic
-n = 7;
-m = 0;
+n = 5;
+m = 2;
 alphaf = 0.01;
 omega = 1;
-omegaf = 1;
+omegaf = 0;
 Aa = 0.0004;
 Ad = 0.0002;
 lambda_a = 4;
 lambda_d = 4;
-theta0 = [0:-1/n:-1+1/n 0];
+theta0 = [0:-1/n:-1+1/n -(m-1)/n];
 dt=0.001;
 
 options=odeset('RelTol',1e-4,'AbsTol',10e-7);
 
-[T,Y] = ode45(@oscRHS,(0:dt:10),theta0,options,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d,H,shift);
+[T,Y] = ode45(@oscRHS,(0:dt:30),theta0,options,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d);
 toc
 
 plot(T,sin(2*pi*Y(:,1:n)));

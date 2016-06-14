@@ -36,7 +36,7 @@ omegaf           = 2 * pi * pars.omegaf;
 nvar=length(x0);
 s = pars.s;
 %%%%%
-[G l a]= G_tuned_01(pars);
+%[G l a]= G_tuned_01(pars);
 %%%%%
 G = computeIntraMatrix(pars.intra);
 %%%%%

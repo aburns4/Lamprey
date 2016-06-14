@@ -37,7 +37,7 @@ load(Hfile);                 % Load file with coupling functions.
 %H=10^(-3)*H;
 % Assume that all forcing connections are given equal weight.
 
-%GETS THE H_FORCING FROM H (WHICH CONTAINS PRCS(1-6) AND FORCING(7-10)
+%GETS THE H_FORCING FROM H (WHICH CONTAINS PRCS(1-6) AND FORCING(7-10))
 H_forcing = sum(H(:, end-forcing_conn + 1:end), 2);  % add all the cellular forcing connections- each column is one of the 6 cell-to-cell connections
                                                      %sum(H,2) means sum
                                                      %along the rows
@@ -61,8 +61,10 @@ nl        = length(l);
 
 % Adjust relative strength with length.
 % this is for all-to-all coupling
-al = [intra * g_ratio * ra * exp((-maxa : -1)'/la); 1; intra * g_ratio * rd * exp(-(1 : maxd)'/ld)]; %coupling scheme from other models
-Hs1 = Hs1 .* repmat(al', n_phi, 1);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%al = [intra * g_ratio * ra * exp((-maxa : -1)'/la); 1; intra * g_ratio * rd * exp(-(1 : maxd)'/ld)]; %coupling scheme from other models
+%Hs1 = Hs1 .* repmat(al', n_phi, 1);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %    filename = sprintf('Hfunction_data_1_23_14.mat');
 %    save(filename,'H','Hs1','Hs1a','H_forcing','l','w','Hsum','Hfile','al');
