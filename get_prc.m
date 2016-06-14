@@ -1,7 +1,7 @@
 % Computes the PRCs (phase response curves) for the tuned neural model.
 function [omega, prc] = get_prc()
 
-n = 1;                                % Number of oscillators.
+n = 10;                                % Number of oscillators.
 forcing_position = 1;                 % There is no forcing in this run.
 n_cell = 6;                           % Number of cells per oscillators.
 
@@ -19,21 +19,22 @@ intra = [ 1  2  35.0;
           3  4  35.0;
           3  5  35.0;
           3  6  35.0];
-
-%ra      = 0.002;         % Amplitude of ascending strength function.
-%rd      = 0.0005;        % Amplitude of descending strength function.
-%g_ratio = 20;            % Scaling factor for intersegmental strenghts.
-%la      =  3;            % Length constant of ascending strength function.
-%ld      = 10;            % Length constant of descending strength function.
-%maxa    = n-1;            % Maximum ascending length. All to all.
-%maxd    = n-1;            % Maximum descending length. All to all.     
-
+%%%%%
+ra      = 0.002;         % Amplitude of ascending strength function.
+rd      = 0.0005;        % Amplitude of descending strength function.
+g_ratio = 20;            % Scaling factor for intersegmental strenghts.
+la      =  3;            % Length constant of ascending strength function.
+ld      = 10;            % Length constant of descending strength function.
+maxa    = n-1;            % Maximum ascending length. All to all.
+maxd    = n-1;            % Maximum descending length. All to all.     
+%%%%%
 Sym = 1;
      
 mu      = [];            % Average number of connections per segment
 seed    = 0;             % Seed for generating random connections.
-
-%Hfile   = 'H_forcing06_001';     % Name of file with coupling functions.
+%%%%%
+Hfile   = 'H_prc_11314';%'H_forcing06_001';     % Name of file with coupling functions.
+%%%%%
 psi_bar = 0.010;                 % Desired phase lag per segment.
 Tuning  = 1;                     % Tuning method.
 dw      = 0.001;                 % Weight step size to use during tuning.
@@ -47,10 +48,9 @@ pars = struct('n',n,'gR',gR,'gT',gT,'vS',vS,'s',s, ...
                 'psi_bar',psi_bar, ...
                   'Tuning',Tuning,'dw',dw','mu',mu,'seed',seed, ...
                     'forcing_position', forcing_position, ...
-                      'omegaf',omegaf,'forcing_conn',forcing_conn,'Sym',Sym);
-                  
-               %'ra',ra,'rd',rd,'la',la,'ld',ld,'g_ratio',g_ratio,...
-               %'maxa',maxa,'maxd',maxd. 'Hfile', Hfile, ...
+                      'omegaf',omegaf,'forcing_conn',forcing_conn,'Sym',Sym,...%);
+                        'ra',ra,'rd',rd,'la',la,'ld',ld,'g_ratio',g_ratio,...
+                            'maxa',maxa,'maxd',maxd, 'Hfile', Hfile);%, ...
                  
 
 % Consider all phases from 0 to 2*pi, using increments of size 2*pi / 100.
