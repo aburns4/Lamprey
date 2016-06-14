@@ -37,9 +37,11 @@ load(Hfile);                 % Load file with coupling functions.
 %H=10^(-3)*H;
 % Assume that all forcing connections are given equal weight.
 
+%GETS THE H_FORCING FROM H (WHICH CONTAINS PRCS(1-6) AND FORCING(7-10)
 H_forcing = sum(H(:, end-forcing_conn + 1:end), 2);  % add all the cellular forcing connections- each column is one of the 6 cell-to-cell connections
                                                      %sum(H,2) means sum
                                                      %along the rows
+%SETS H TO ONLY CONTAIN THE PRCS                                                
 H=H(:,1:end-forcing_conn);
 
 % Tune connections by adjusting weights of E-to-L and C-to-E connections.

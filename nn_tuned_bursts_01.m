@@ -26,15 +26,20 @@ n       = pars.n;        % Number of oscillators.
 gR      = pars.gR;       % Resting conductance for each cell type.
 gT      = pars.gT;       % Tonic excitatory conductance for each cell type.
 vS      = pars.vS;       % Synpatic reversal potential for each cell type.
+%%%%%
 %intra   = pars.intra;    % Intrasegmental connection parameters.
 %inter   = pars.inter;    % Intersegmental connection parameters.
+%%%%%
 alpha_f = pars.alpha_f;    % Forcing strength
 forcing_position = pars.forcing_position;
 omegaf           = 2 * pi * pars.omegaf;
 nvar=length(x0);
 s = pars.s;
-%[G l a]= G_tuned_01(pars);
+%%%%%
+[G l a]= G_tuned_01(pars);
+%%%%%
 G = computeIntraMatrix(pars.intra);
+%%%%%
 
 % Modified next section to include forcing
  
@@ -73,66 +78,66 @@ nb     = zeros(n, 1);
 nb_max = (nb_min + 100)*ones(n, 1);  % Allocate memory for nb_max burst times.
 tb     = cell(n, 1);
 for i = 1 : n,
-  tb{i} = zeros(nb_max(i), 1);
+    tb{i} = zeros(nb_max(i), 1);
 end
 
 for i = 1 : n_step,
-  xp  = xc;
-  xc  = rk4_step_neural(xp, dt, dt2, dt6, gT, gR_gT, vS, G, omegaf, s);
-
-  j   = find(xp < 0 & xc >= 0 | xp > 0 & xc <= 0);
-  nj  = size(j, 1);
-  if nj > 0
-    dtc     = dt * (xp(j) ./ (xp(j) - xc(j)));
-    [dtc k] = sort(dtc);
-    j       = j(k);
+    xp  = xc;
+    xc  = rk4_step_neural(xp, dt, dt2, dt6, gT, gR_gT, vS, G, omegaf, s);
     
-    dt_sum  = 0;
-    for k = 1 : nj,
-      jk     = j(k);
-
-      dtc1   = dtc(k) - dt_sum;
-      x1     = rk4_step_neural(xp, dtc1, dtc1/2, dtc1/6, gT, gR_gT, vS, G, omegaf, s);
-
-      dtc2   = dtc1 * xp(jk) / (xp(jk) - x1(jk));
-      x2     = rk4_step_neural(xp, dtc2, dtc2/2, dtc2/6, gT, gR_gT, vS, G, omegaf, s);
-
-      if mod(jk, 6) == ib & xc(jk) >= 0         % Burst time for left E.
-        dtc3   = dtc2 * xp(jk) / (xp(jk) - x2(jk));
-        xp     = rk4_step_neural(xp, dtc3, dtc3/2, dtc3/6, gT, gR_gT, vS, G, omegaf, s);
- 
-        dt_sum = dt_sum + dtc3;
-
-        p       = floor((jk + 5)/6);           % Segment index.
-        nb(p)   = nb(p) + 1;
-
-        if nb(p) > nb_max(p)                   % If necessary,
-          tb{p}     = [tb{p}; zeros(100,1)];   % allocate more memory for
-          nb_max(p) = nb_max(p) + 100;         % burst times.
+    j   = find(xp < 0 & xc >= 0 | xp > 0 & xc <= 0);
+    nj  = size(j, 1);
+    if nj > 0
+        dtc     = dt * (xp(j) ./ (xp(j) - xc(j)));
+        [dtc k] = sort(dtc);
+        j       = j(k);
+        
+        dt_sum  = 0;
+        for k = 1 : nj,
+            jk     = j(k);
+            
+            dtc1   = dtc(k) - dt_sum;
+            x1     = rk4_step_neural(xp, dtc1, dtc1/2, dtc1/6, gT, gR_gT, vS, G, omegaf, s);
+            
+            dtc2   = dtc1 * xp(jk) / (xp(jk) - x1(jk));
+            x2     = rk4_step_neural(xp, dtc2, dtc2/2, dtc2/6, gT, gR_gT, vS, G, omegaf, s);
+            
+            if mod(jk, 6) == ib & xc(jk) >= 0         % Burst time for left E.
+                dtc3   = dtc2 * xp(jk) / (xp(jk) - x2(jk));
+                xp     = rk4_step_neural(xp, dtc3, dtc3/2, dtc3/6, gT, gR_gT, vS, G, omegaf, s);
+                
+                dt_sum = dt_sum + dtc3;
+                
+                p       = floor((jk + 5)/6);           % Segment index.
+                nb(p)   = nb(p) + 1;
+                
+                if nb(p) > nb_max(p)                   % If necessary,
+                    tb{p}     = [tb{p}; zeros(100,1)];   % allocate more memory for
+                    nb_max(p) = nb_max(p) + 100;         % burst times.
+                end
+                
+                tb{p}(nb(p)) = (i - 1)*dt + dt_sum;
+                
+                %if min(nb) == nb_min
+                if nb(1) == nb_min
+                    xb = xp;
+                    for r = 1 : n,
+                        tb{r} = tb{r}(1 : nb(r));
+                    end
+                    return;
+                end
+            else
+                xp     = x2;
+                dt_sum = dt_sum + dtc2;
+            end
         end
-
-        tb{p}(nb(p)) = (i - 1)*dt + dt_sum;
-
-        %if min(nb) == nb_min
-        if nb(1) == nb_min
-          xb = xp;
-          for r = 1 : n,
-            tb{r} = tb{r}(1 : nb(r));
-          end
-          return;
-        end
-      else
-        xp     = x2;
-        dt_sum = dt_sum + dtc2;
-      end
+        
+        dtc3 = dt - dt_sum;
+        xc   = rk4_step_neural(xp, dtc3, dtc3/2, dtc3/6, gT, gR_gT, vS, G, omegaf, s);
     end
-
-    dtc3 = dt - dt_sum;
-    xc   = rk4_step_neural(xp, dtc3, dtc3/2, dtc3/6, gT, gR_gT, vS, G, omegaf, s);
-  end
 end
 
 xb = xc;
 for r = 1 : n,
-  tb{r} = tb{r}(1 : nb(r));
+    tb{r} = tb{r}(1 : nb(r));
 end

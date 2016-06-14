@@ -28,8 +28,8 @@ psi12 = zeros(q, 1);
 psi23 = zeros(q, 1);
 
 for i = 1 : q,
-  psi12(i) = Hz_01(phi, (1 - r(i))*H1 + r(i)*H2);
-  psi23(i) = Hz_01(phi, (1 - r(i))*H2 + r(i)*H3);
+    psi12(i) = Hz_01(phi, (1 - r(i))*H1 + r(i)*H2);
+    psi23(i) = Hz_01(phi, (1 - r(i))*H2 + r(i)*H3);
 end
 
 psi_min = min(psi12);
@@ -44,20 +44,20 @@ nl = length(l);
 w  = zeros(nl, 3);
 
 for i = 1 : nl,
- psii = l(i)*psi_bar;
-
- if psii < psi2
-   ri = Hz_01(r, psi12 - psii);
-   w(i,:) = [1-ri  ri  0];
- else
-   ri = Hz_01(r, psi23 - psii);
-   w(i,:) = [0  1-ri  ri];
- end
+    psii = l(i)*psi_bar;
+    
+    if psii < psi2
+        ri = Hz_01(r, psi12 - psii);
+        w(i,:) = [1-ri  ri  0];
+    else
+        ri = Hz_01(r, psi23 - psii);
+        w(i,:) = [0  1-ri  ri];
+    end
 end
 
 Hs = [H1 H2 H3]*w';
 
 psi = zeros(nl, 1);
 for i = 1 : nl,
-  psi(i) = Hz_01(phi, Hs(:,i));
+    psi(i) = Hz_01(phi, Hs(:,i));
 end

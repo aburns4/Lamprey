@@ -69,7 +69,8 @@ titleList = ['E to L'; 'E to C';
              'C to L'; 'C to C'];
 
 phi1 = -0.5:0.01:0.5;
-         
+
+figure(1)
 for i = 1 : 3,
   for j = 1 : 2,
     k = 2*(i - 1) + j;
@@ -123,7 +124,7 @@ H_forcing = [H_forcing(n_phi2:end,:); H_forcing(2:n_phi2,:)];
 
 titleList = ['EC to L inhibitory'; 'EC to C inhibitory';
              'EC to L excitatory'; 'EC to C excitatory'];
-
+figure(2);
 for i = 1 : 2,
   for j = 1 : 2,
     k = 2*(i - 1) + j;
@@ -138,5 +139,8 @@ end
 
 H = [H_inter, H_forcing];
 
-save('H_prc_11314.mat', 'H', 'H_inter', 'H_forcing', 'pars', 'P', 'phi', 'n_phi', 'x');
+%Our H_forcing_final???
+H_forcing_final=2*sum(H_forcing,2);
+
+save('H_prc_11314.mat', 'H', 'H_inter', 'H_forcing', 'pars', 'P', 'phi', 'n_phi', 'x', 'H_forcing_final');
 
