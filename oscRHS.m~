@@ -23,7 +23,7 @@ for i = 1:n
         else
             phaseDiff=mod(phaseDiff,0.5);
         end
-        couplingfctn = interp1(-0.5:0.01:0.5,Hs1(k+n,:),phaseDiff,'spline');
+        couplingfctn = interp1(-0.5:0.01:0.5,H(k+n,:),phaseDiff,'spline');
         couplingstr = couplingstr + alpha_k*(couplingfctn);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

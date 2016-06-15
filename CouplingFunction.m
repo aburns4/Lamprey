@@ -1,4 +1,4 @@
-function [H_r, H_forcing]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambda_a,lambda_d)
+function [H_r, H_forcing, Hs1]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambda_a,lambda_d)
     %% GET PRC
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -341,5 +341,6 @@ function [H_r, H_forcing]= CouplingFunction(numOscillators, forcingPosition,Aa,A
     %Multiply H_inter by connTypes to compute H_r
     %This is (4) is Massarelli, 2016
     H_r=connTypes*H_inter;
+    Hs1=Hs1';
 end
 %save('CouplingFunction.mat','H_r','H_forcing');
