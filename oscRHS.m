@@ -1,6 +1,6 @@
-function dy = oscRHS(t,theta,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d)
+function dy = oscRHS(t,theta,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d,H_r,H_forcing)
     
-    load CouplingFunction.mat;
+    %load CouplingFunction.mat;
 
     dy = zeros(n+1,1);
     
@@ -38,7 +38,7 @@ function dy = oscRHS(t,theta,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d)
             else
                 phaseDiff=mod(phaseDiff,0.5);
             end
-            couplingfctn=interp1(-0.5:0.01:0.5,H_forcing',phaseDiff,'spline');
+            couplingfctn=interp1(-0.5:0.01:0.5,(H_forcing)',phaseDiff,'spline');
             couplingstr=couplingstr+alphaf*(couplingfctn);
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

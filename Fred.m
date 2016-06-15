@@ -1,26 +1,31 @@
 
-clear all
-close all
+%clear all
+%close all
 clc
 tic
 n = 5;
-m = 2;
-alphaf = 0.01;
+m = 3;
+alphaf = 0.02;
 omega = 1;
-omegaf = 0;
-Aa = 0.0004;
-Ad = 0.0002;
-lambda_a = 4;
+omegaf = 1;
+Aa = 0.006;
+Ad = 0.0004;
+lambda_a = 0.75;
 lambda_d = 4;
 theta0 = [0:-1/n:-1+1/n -(m-1)/n];
 dt=0.001;
 
 options=odeset('RelTol',1e-4,'AbsTol',10e-7);
 
-[T,Y] = ode45(@oscRHS,(0:dt:30),theta0,options,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d);
+[H_r, H_forcing]=CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d);
+
+[T,Y] = ode45(@oscRHS,(0:dt:10),theta0,options,n,m,alphaf,omega,omegaf,Aa,Ad,lambda_a,lambda_d,H_r,H_forcing);
 toc
 
-plot(T,sin(2*pi*Y(:,1:n)));
+close all;
+
+%plot(T,sin(2*pi*Y(:,1:n)));
+plot(T,Y(:,1:n));
 
 %plots  voltage with forcing. To change plotting speed change mod values 
 % for t = 1:(20/dt)
