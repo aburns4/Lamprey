@@ -1,4 +1,4 @@
-function [alpha_r]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambda_a,lambda_d)
+function [alpha_r]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambda_a,lambda_d,sigma)
     %% GET PRC
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -11,7 +11,7 @@ function [alpha_r]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambd
                                           % each cell type.
     vS      = [ 1    ; -1    ; -1    ];   % Synpatic reversal potential for
                                           % each cell type.
-    s       = 0.05;                       % Scale for smoothing threshold function.
+    s       = sigma;                       % Scale for smoothing threshold function.
     fprintf('Smooth h, s = %d\n', s);
 
     intra = [ 1  2  35.0;
@@ -324,18 +324,32 @@ function [alpha_r]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambd
     LtoC = zeros(numRows,1);
     EtoC = zeros(numRows,1);
     
+%     if(isempty(rightIndex)==1)
+%         LtoC = w(:,2);
+%         EtoC = 6*w(:,3)+w(:,2);
+%     elseif(isempty(leftIndex)==1)
+%         LtoC = 6*w(:,1)+w(:,2);
+%         EtoC = w(:,2);
+%     else
+%         LtoC(rightIndex) = 6*w(rightIndex,1)+other(rightIndex);
+%         LtoC(leftIndex) = other(leftIndex);
+%         
+%         EtoC(rightIndex) = other(rightIndex);
+%         EtoC(leftIndex) = 6*(w(leftIndex,3)) + other(leftIndex);
+%     end
+
     if(isempty(rightIndex)==1)
         LtoC = w(:,2);
-        EtoC = 6*w(:,3)+w(:,2);
-    elseif(isempty(leftIndex)==1)
-        LtoC = 6*w(:,1)+w(:,2);
         EtoC = w(:,3);
+    elseif(isempty(leftIndex)==1)
+        LtoC = w(:,1);
+        EtoC = w(:,2);
     else
-        LtoC(rightIndex) = 6*w(rightIndex,1)+other(rightIndex);
+        LtoC(rightIndex) = w(rightIndex,1);
         LtoC(leftIndex) = other(leftIndex);
         
         EtoC(rightIndex) = other(rightIndex);
-        EtoC(leftIndex) = 6*(w(leftIndex,3)) + other(leftIndex);
+        EtoC(leftIndex) = w(leftIndex,3);
     end
 
     % figure(3);

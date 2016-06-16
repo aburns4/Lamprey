@@ -1,7 +1,7 @@
 function dv = neuralFunc(t,v,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f)
     
     dv=zeros((6*n)+1,1);
-
+    
     for i = 1:n
         for j = 1:6
             
