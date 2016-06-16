@@ -321,19 +321,16 @@ function [alpha_r]= CouplingFunction(numOscillators, forcingPosition,Aa,Ad,lambd
     leftIndex=find(w(:,1)==0);
     rightIndex=find(w(:,3)==0);
     other=w(:,2);
-    LtoC = zeros(numRows,1);
-    EtoC = zeros(numRows,1);
     
     if(isempty(rightIndex)==1)
         LtoC = w(:,2);
         EtoC = 6*w(:,3)+w(:,2);
-    elseif(isempty(leftIndex)==1)
-        LtoC = 6*w(:,1)+w(:,2);
-        EtoC = w(:,3);
     else
+        LtoC = zeros(numRows,1);
         LtoC(rightIndex) = 6*w(rightIndex,1)+other(rightIndex);
         LtoC(leftIndex) = other(leftIndex);
-        
+
+        EtoC = zeros(numRows,1);
         EtoC(rightIndex) = other(rightIndex);
         EtoC(leftIndex) = 6*(w(leftIndex,3)) + other(leftIndex);
     end

@@ -3,10 +3,10 @@
 %close all
 clc
 tic
-n = 10;
+n = 100;
 m = 0;
 alphaf = 4;
-omega = 0.5;
+omega = 1;
 omegaf = 1;
 Aa = 1;
 Ad = 10;
