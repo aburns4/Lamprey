@@ -3,8 +3,8 @@ function dv = neuralFunc(t,v,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alp
     dv=zeros((6*n)+1,1);
 
     for i = 1:n
+        %result = 0;
         for j = 1:6
-            
             result=0;
             result = -G_R*v(6*(i-1)+j);
             if(j == 1 || j == 4) %E cell
@@ -16,7 +16,7 @@ function dv = neuralFunc(t,v,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alp
             end
             
             %Double Sum Part of Equation
-            doublesum = 0;
+            %doublesum = 0;
             for k = 1:n
                 for l = 1:6
                     
@@ -35,13 +35,7 @@ function dv = neuralFunc(t,v,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alp
                     elseif((l==1 && j==2) || (l==4 && j==5)) %E to L connection
                         strength=alpha_r(r,3);
                         doublesum = doublesum + strength*G_0(2)*(sigma*log(1+exp(v(6*(k-1)+l)/sigma)))*(V_syn(1)-v(6*(i-1)+j));
-                    elseif((l==3 && j==4) || (l==6 && j==1)) %C to E connection
-                        strength=alpha_r(r,3);
-                        doublesum = doublesum + strength*G_0(2)*(sigma*log(1+exp(v(6*(k-1)+l)/sigma)))*(V_syn(2)-v(6*(i-1)+j));
-                    elseif((l==3 && j==5) || (l==6 && j==2)) %C to L connection
-                        strength=alpha_r(r,3);
-                        doublesum = doublesum + strength*G_0(2)*(sigma*log(1+exp(v(6*(k-1)+l)/sigma)))*(V_syn(2)-v(6*(i-1)+j));
-                    elseif((l==3 && j==6) || (l==6 && j==3)) %C to C connection
+                    else %All C to other connection
                         strength=alpha_r(r,3);
                         doublesum = doublesum + strength*G_0(2)*(sigma*log(1+exp(v(6*(k-1)+l)/sigma)))*(V_syn(2)-v(6*(i-1)+j));
                     end

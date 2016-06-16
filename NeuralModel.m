@@ -21,15 +21,16 @@ dt = 0.001; %Time step
 alpha_f = 0; %Forcing strength
 
 %v_0 = zeros(6*n+1,1); %Initial Conditions
-v_0 = (2*rand(6*n+1,1))-1;
+%v_0 = (2*rand(6*n+1,1))-1;
+v_0 = [0.2 0.5 0.19 -0.55 -0.6 -0.3 0];
 
-options=odeset('RelTol',1e-4,'AbsTol',10e-7);
+options=odeset('RelTol',1e-4,'AbsTol',1e-7);
 
 alpha_r = CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d);
 %alpha_r is the strength of the connections for different r
 %rows are of r and columns are [L to C, E to C, other]
 
-[T,Y] = ode45(@neuralFunc,(0:dt:2),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+[T,Y] = ode45(@neuralFunc,(0:dt:5),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
 
 
