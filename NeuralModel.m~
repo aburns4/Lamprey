@@ -18,7 +18,7 @@ n = 1; %Number of oscillators
 m = 1; %Forcing position
 dt = 0.001; %Time step
 
-alpha_f = 0.02; %Forcing strength
+alpha_f = 0; %Forcing strength
 
 %v_0 = zeros(6*n+1,1); %Initial Conditions
 %v_0 = (2*rand(6*n+1,1))-1;
