@@ -51,22 +51,24 @@ function dv = neuralFunc(t,v,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alp
             
             %Forcing Term
             if(i == m)
-                forcingSum = 0;
+                finalSum = 0;
                 for s = 1:2 %For each EC side
+                    tempSum = 0;
                     forcingSum = G_f*(sigma*log(1+exp(((-1)^s*sin(2*pi*v(end)))/sigma)));
                     if(s==1 && (j==2 || j==3)) %Left side, EC to L or C
-                        forcingSum = forcingSum*(V_synec(1)-v(6*(i-1)+j));
+                        tempSum = tempSum + forcingSum*(V_synec(1)-v(6*(i-1)+j));
                     elseif(s==1 && (j==5 || j==6)) %Left side, EC to oppposite L or C
-                        forcingSum = forcingSum*(V_synec(2)-v(6*(i-1)+j));
+                        tempSum = tempSum + forcingSum*(V_synec(2)-v(6*(i-1)+j));
                     elseif(s==2 && (j==5 || j==6)) %Right side, EC to L or C
-                        forcingSum = forcingSum*(V_synec(1)-v(6*(i-1)+j));
+                        tempSum = tempSum + forcingSum*(V_synec(1)-v(6*(i-1)+j));
                     elseif(s==2 && (j==2 || j==3)) %Right side, EC to opposite L or C
-                        forcingSum = forcingSum*(V_synec(2)-v(6*(i-1)+j));
+                        tempSum = tempSum + forcingSum*(V_synec(2)-v(6*(i-1)+j));
                     else
-                        forcingSum = 0;
+                        tempSum = 0;
                     end
+                    finalSum = finalSum + tempSum;
                 end
-                result = result + alpha_f*forcingSum;
+                result = result + alpha_f*finalSum;
             end
             
             dv(6*(i-1)+j)=result;

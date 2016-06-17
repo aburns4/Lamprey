@@ -50,7 +50,18 @@ alpha_r = CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d,sigma);
 % xlabel('Time in Seconds', 'FontName', 'Times New Roman', 'FontSize', 20);
 % ylabel('Cell Voltage V_{ij}', 'FontName', 'Times New Roman', 'FontSize', 20);
 %axis([0 2.7 -1 1]);
-
+figure(1)
 plot(T,Y(:,1:6*n));
 
 toc
+
+
+for i=2:(n-1)
+    for j=1:6
+        A = Y(:,6*(i)+j)-Y(:,6*(i-1)+j)
+       % plot(Y(6*(i)+j)-Y(6*(i-1)+j))
+        %hold on
+    end
+end
+figure(2)
+plot(A)
