@@ -13,13 +13,13 @@ Aa = 0.0004;
 Ad = 0.0002;
 lambda_a = 4;
 lambda_d = 4;
-omega_f=0.7407; %Forcing frequency
+omega_f=1; %Forcing frequency
 
-n = 24; %Number of oscillators
-m = 0; %Forcing position
+n = 5; %Number of oscillators
+m = 1; %Forcing position
 dt = 0.001; %Time step
 
-alpha_f = 4; %Forcing strength
+alpha_f = 5; %Forcing strength
 
 v_0 = zeros(6*n+1,1); %Initial Conditions
 %v_0 = (2*rand(6*n+1,1))-1;
@@ -30,7 +30,7 @@ alpha_r = CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d,sigma);
 %alpha_r is the strength of the connections for different r
 %rows are of r and columns are [L to C, E to C, other]
 
-[T,Y] = ode45(@neuralFunc,(0:dt:30),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+[T,Y] = ode45(@neuralFunc,(0:dt:5),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
 % plot(T,Y(:,1),'b');
 % hold on
@@ -45,7 +45,18 @@ alpha_r = CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d,sigma);
 % xlabel('Time in Seconds', 'FontName', 'Times New Roman', 'FontSize', 20);
 % ylabel('Cell Voltage V_{ij}', 'FontName', 'Times New Roman', 'FontSize', 20);
 %axis([0 2.7 -1 1]);
-
+figure(1)
 plot(T,Y(:,1:6*n));
 
 toc
+
+
+for i=2:(n-1)
+    for j=1:6
+        A = Y(:,6*(i)+j)-Y(:,6*(i-1)+j)
+       % plot(Y(6*(i)+j)-Y(6*(i-1)+j))
+        %hold on
+    end
+end
+figure(2)
+plot(A)
