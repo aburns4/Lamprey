@@ -20,7 +20,7 @@ lambda_a = 0.75;
 lambda_d = 4;
 omega_f = 1/1.35; %Forcing frequency
 
-n = 2; %Number of oscillators
+n = 5; %Number of oscillators
 m = 0; %Forcing position
 dt = 0.001; %Time step
 
