@@ -20,7 +20,7 @@ lambda_a = 0.75;
 lambda_d = 4;
 omega_f = 1/1.35; %Forcing frequency
 
-n = 2; %Number of oscillators
+n = 30; %Number of oscillators
 m = 0; %Forcing position
 dt = 0.001; %Time step
 
@@ -31,11 +31,18 @@ v_0 = zeros(6*n+1,1); %Initial Conditions
 
 options=odeset('RelTol',1e-4,'AbsTol',1e-7);
 
-alpha_r = CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d,sigma);
+%alpha_r = CouplingFunction(n,m,Aa,Ad,lambda_a,lambda_d,sigma);
 %alpha_r is the strength of the connections for different r
 %rows are of r and columns are [L to C, E to C, other]
 
-[T,Y] = ode45(@neuralFunc,(0:dt:5),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+alpha_r = zeros(2*n-1,3);
+for r = 1:(2*n-1)
+    k = r-n;
+    alpha_r(r,:)=str(Aa,Ad,lambda_a,lambda_d,k);
+end
+    
+
+[T,Y] = ode45(@neuralFunc,(0:dt:4),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
 % plot(T,Y(:,1),'b');
 % hold on
@@ -54,14 +61,3 @@ figure(1)
 plot(T,Y(:,1:6*n));
 
 toc
-
-
-for i=2:(n-1)
-    for j=1:6
-        A = Y(:,6*(i)+j)-Y(:,6*(i-1)+j)
-       % plot(Y(6*(i)+j)-Y(6*(i-1)+j))
-        %hold on
-    end
-end
-figure(2)
-plot(A)
