@@ -1,7 +1,7 @@
 % Computes the PRCs (phase response curves) for the tuned neural model.
 function [omega, prc] = get_prc()
 
-n = 10;                                % Number of oscillators.
+n = 1;                                % Number of oscillators.
 forcing_position = 1;                 % There is no forcing in this run.
 n_cell = 6;                           % Number of cells per oscillators.
 
