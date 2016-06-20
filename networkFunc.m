@@ -38,14 +38,14 @@ function da = networkFunc(t,a,tDrives,v_ie,T_i,v_ij,w_ij,n)
                     end
                     
                     if((l==1 && j==2) || (l==4 && j==5) || (l==1 && j==3) || (l==4 && j==6)) %E to L and E to C excitatory connections
-                        if(a(6*(k-1)+l)==0)
+                        if(a(6*(k-1)+l)<0)
                             f_a=0;
                         else
                             f_a=a(6*(k-1)+l);
                         end
                         secondTerm = secondTerm + w_ik*f_a*(v_ij(1)-a(6*(i-1)+j));
                     elseif((l==2 && j==3) || (l==5 && j==6) || (l==3 && (j==4 || j==5 || j==6)) || (l==6 && (j==1 || j==2 || j==3))) %L to C and C to E,L,C inhibitory connections
-                        if(a(6*(k-1)+l)==0)
+                        if(a(6*(k-1)+l)<0)
                             f_a=0;
                         else
                             f_a=a(6*(k-1)+l);
