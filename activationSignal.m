@@ -5,7 +5,7 @@ clear;
 clc;
 
 t_0=0;
-t_f=5;
+t_f=10;
 dt = 0.001; %Time step
 
 G_R = 3.5; %Resting Conductance
@@ -20,7 +20,7 @@ sigma = 0.05; %Parameter for smooth threshold function
 
 omega_f = 1; %Forcing frequency
 
-n = 3; %Number of oscillators
+n = 5; %Number of oscillators
 m = 0; %Forcing position
 
 alpha_f = 5; %Forcing strength
@@ -34,41 +34,31 @@ alpha_r=[.05 1 .02];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[T,Y] = forwardEulerAgain(t_0,t_f,dt,v_0,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+[T,Y] = forwardEulerAgain(0,30,dt,v_0,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+[T,Y] = forwardEulerAgain(t_0,t_f,dt,Y(end,:),n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
-j = 1;
-k = 1;
-for i=1:size(Y,2)-1
-    if mod(i,6) == 0
-        allEcellsLeft(:,j) = Y(:,i);
-        j = j + 1;
-    elseif (mod(i,6)) == 4;
-        allEcellsRight(:,k) = Y(:,i);
-        k = k + 1;
-    end
-end
 
-for l = 1:size(allEcellsLeft,1)
-    for m = 1:size(allEcellsLeft,2)
-        if allEcellsLeft(l,m) > 0
-            activationLeft(l,m) = 1;
+LeftECellMat = zeros(size(Y,1),n);
+RightECellMat = zeros(size(Y,1),n);
+
+for i=1:n
+    LeftECellMat(:,i) = Y(:,6*(i-1)+1);
+    RightECellMat(:,i) = Y(:,6*(i-1)+4);
+    for j=1:size(Y,1)
+        if(LeftECellMat(j,i)>0)
+            LeftECellMat(j,i)=1;
         else
-            activationLeft(l,m) = 0;
+            LeftECellMat(j,i)=0;
+        end
+        if(RightECellMat(j,i)>0)
+            RightECellMat(j,i)=1;
+        else
+            RightECellMat(j,i)=0;
         end
     end
 end
 
-for n = 1:size(allEcellsRight,1)
-    for o = 1:size(allEcellsRight,2)
-        if allEcellsRight(n,o) > 0
-            activationRight(n,o) = 1;
-        else
-            activationRight(n,o) = 0;
-        end
-    end
-end
-
-figure(1)
-plot(activationLeft);
-figure(2)
-plot(activationRight);
+figure(1);
+plot(LeftECellMat);
+figure(2);
+plot(RightECellMat);

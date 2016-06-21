@@ -6,7 +6,7 @@ clc;
 
 t_0=0;
 t_f=10;
-dt = 0.0007; %Time step
+dt = 0.001; %Time step
 
 G_R = 3.5; %Resting Conductance
 G_T = [0.875, 0.35, 3.5]; %Tonic Excitatory Conductance [E,L,C]
@@ -34,18 +34,19 @@ alpha_r=[.05 1 .02];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[T,Y] = forwardEulerAgain(t_0,t_f,dt,v_0,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+[T,Y] = forwardEulerAgain(0,30,dt,v_0,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+[T,Y] = forwardEulerAgain(t_0,t_f,dt,Y(end,:),n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
 
 %Plots Voltage against time
 figure(1)
 plot(T,Y(:,1:6:6*n))
-  
-figure(2)
-plot(T,Y(:,2:6:6*n))
+hold on;
+plot(T,Y(:,4:6:6*n))
+axis([0 10 0 0.2]);
 
-figure(3)
-plot(T,Y(:,3:6:6*n))
+%figure(3)
+%plot(T,Y(:,3:6:6*n))
 
 
 
