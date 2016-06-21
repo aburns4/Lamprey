@@ -5,8 +5,8 @@ clear;
 clc;
 
 t_0=0;
-t_f=76;
-dt = 0.0005; %Time step
+t_f=10;
+dt = 0.0007; %Time step
 
 G_R = 3.5; %Resting Conductance
 G_T = [0.875, 0.35, 3.5]; %Tonic Excitatory Conductance [E,L,C]
@@ -36,31 +36,17 @@ alpha_r=[.05 1 .02];
 
 [T,Y] = forwardEulerAgain(t_0,t_f,dt,v_0,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
-%plot(T,Y(:,1:6*n))
 
+%Plots Voltage against time
 figure(1)
-for i= 1:size(Y,2)
-    if mod(i,6)==0
-        plot(T,Y(:,i))
-        hold on
-    end
-end
-
+plot(T,Y(:,1:6:6*n))
+  
 figure(2)
-for i= 1:size(Y,2)-6
-    if mod(i,6)==0
-        plot(T,Y(:,i+1))
-        hold on
-    end
-end
+plot(T,Y(:,2:6:6*n))
 
 figure(3)
-for i= 1:size(Y,2)-6
-    if mod(i,6)==0
-        plot(T,Y(:,i+2))
-        hold on
-    end
-end
+plot(T,Y(:,3:6:6*n))
+
 
 
 %CALCULATES THE PERIOD AND NATURAL FREQUENCY OF THE SYSTEM
@@ -68,7 +54,6 @@ period = zeros(1,n);
 j=0;
 for i = 1:6:6*n
     j=j+1;
-        
         E_zeros=find(Y(1:end-1,i)<0 & Y(2:end,i)>=0);
         L_zeros=find(Y(1:end-1,i+1)<0 & Y(2:end,i+1)>=0);
         C_zeros=find(Y(1:end-1,i+2)<0 & Y(2:end,i+2)>=0);
@@ -78,8 +63,8 @@ for i = 1:6:6*n
         period(j) = (y1+y2+y3)*dt/3;
         freq(j) = 1/period(j);
 end
-
-
+mP=mean(period)
+mF=mean(freq)
 
 
 
