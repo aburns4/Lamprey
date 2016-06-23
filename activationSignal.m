@@ -41,6 +41,19 @@ alpha_r=[.05 1 .02];
 LeftECellMat = zeros(size(Y,1),n);
 RightECellMat = zeros(size(Y,1),n);
 
+activationLR = Y;
+
+for i = 1:size(Y,1)
+    for j = 1:size(Y,2)-1
+        if(activationLR(i,j)>0)
+            activationLR(i,j)=1;
+        else
+            activationLR(i,j)=0;
+        end
+    end
+end
+
+
 for i=1:n
     LeftECellMat(:,i) = Y(:,6*(i-1)+1);
     RightECellMat(:,i) = Y(:,6*(i-1)+4);
@@ -79,3 +92,16 @@ for t=1:length(T)
         clf('reset')
     end
 end
+
+%CALCULATES THE PERIOD AND NATURAL FREQUENCY OF THE SYSTEM
+E_zeros=find(Y(1:end-1,1)<0 & Y(2:end,1)>=0);
+L_zeros=find(Y(1:end-1,2)<0 & Y(2:end,2)>=0);
+C_zeros=find(Y(1:end-1,3)<0 & Y(2:end,3)>=0);
+y1=E_zeros(2)-E_zeros(1);
+y2=L_zeros(2)-L_zeros(1);
+y3=C_zeros(2)-C_zeros(1);
+period = (y1+y2+y3)*dt/3;
+freq = 1/period;
+fprintf('The period is %f and the frequency is %f \n',period,freq);
+
+save('activationLevels.mat','n','activationLR', 'T', 'dt', 'period');
