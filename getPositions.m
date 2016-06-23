@@ -1,6 +1,10 @@
+clear;
+clc;
+close all;
+
 pnr = 321;
 
-A=dlmread('fort.38');
+A=dlmread('~/testForcing1/fort.38');
 
 timeSteps=size(A,1)/(4*pnr);
 
@@ -34,9 +38,9 @@ for i = 1:timeSteps
     areax = 0;
     areay = 0;
     for segNum = 1:pnr
-        area = area + segmentLength*(r(segNum,i) - l(segNum,i));
-        areax = areax + segNum*(r(segNum,i) - l(segNum,i));
-        areay = areay + 0.5*(r(segNum,i).^2 - l(segNum,i).^2);
+        area = area + segmentLength*(Yr(segNum,i) - Yl(segNum,i));
+        areax = areax + Xm(segNum,i)*(Yr(segNum,i) - Yl(segNum,i));
+        areay = areay + 0.5*(Yr(segNum,i).^2 - Yl(segNum,i).^2);
     end
     xpoint(i) = areax/area;
     ypoint(i) = areay/area;
@@ -44,20 +48,29 @@ for i = 1:timeSteps
     fprintf('For time %d, the point is (%0.2f,%0.2f)\n',i,xpoint(i),ypoint(i));
 end
 
-
-close all;
 figure(1);
+dt = 0.025;
+xvel = zeros(1,timeSteps);
+yvel = zeros(1,timeSteps);
 
 for i = 1:timeSteps
     clf('reset')
     
-    plot(m(:,i))
+    plot(Xm(:,i),Ym(:,i))
     hold on
-    plot(n(:,i))
-    plot(l(:,i)) 
-    plot(r(:,i))
+    plot(Xn(:,i),Yn(:,i))
+    plot(Xl(:,i),Yl(:,i)) 
+    plot(Xr(:,i),Yr(:,i))
+    axis([-20 20 0 12])
     scatter(xpoint(i),ypoint(i));
+    if(i>1 && i<timeSteps)
+        xvel(i) = (xpoint(i+1)-xpoint(i-1))/(2*dt);
+        yvel(i) = (ypoint(i+1)-ypoint(i-1))/(2*dt);
+        quiver(xpoint(i),ypoint(i),xvel(i),yvel(i),'MaxHeadSize',0.15,'AlignVertexCenters','on','LineWidth',1.0);
+    elseif(i == timeSteps)
+        quiver(xpoint(i-1),ypoint(i-1),xvel(i-1),yvel(i-1),'MaxHeadSize',0.15,'AlignVertexCenter','on','LineWidth',1.0);
+    end
     title(sprintf('Timestep is: %d',i));
-    axis([0 350 5 20])
     pause(.1)
 end
+plot(xpoint,ypoint);

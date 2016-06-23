@@ -20,7 +20,7 @@ sigma = 0.05; %Parameter for smooth threshold function
 
 omega_f = 1; %Forcing frequency
 
-n = 15; %Number of oscillators
+n = 20; %Number of oscillators
 m = 0; %Forcing position
 
 alpha_f = 5; %Forcing strength
