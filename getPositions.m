@@ -2,75 +2,34 @@ clear;
 clc;
 close all;
 
-pnr = 321;
+%BLUE CURVES
+[xpos,ypos,xCenterMass,yCenterMass,xvel,yvel,timeSteps] = formatPositionFile('~/testForcingOtherSideStronger/fort.38');
 
-A=dlmread('~/testForcing1/fort.38');
-
-timeSteps=size(A,1)/(4*pnr);
-
-X=reshape(A(:,1),size(A,1)/timeSteps,timeSteps);
-Y=reshape(A(:,2),size(A,1)/timeSteps,timeSteps);
-
-Xm=X(1:pnr,:);          Ym=Y(1:pnr,:);
-Xn=X(1+pnr:2*pnr,:);    Yn=Y(1+pnr:2*pnr,:);
-Xl=X(1+2*pnr:3*pnr,:);  Yl=Y(1+2*pnr:3*pnr,:);
-Xr=X(1+3*pnr:end,:);    Yr=Y(1+3*pnr:end,:);
-
-m=zeros(pnr,timeSteps);
-n=zeros(pnr,timeSteps);
-l=zeros(pnr,timeSteps);
-r=zeros(pnr,timeSteps);
-
-for i = 1:timeSteps
-    m(:,i)=sqrt(Xm(:,i).^2 + Ym(:,i).^2);
-    n(:,i)=sqrt(Xn(:,i).^2 + Yn(:,i).^2);
-    l(:,i)=sqrt(Xl(:,i).^2 + Yl(:,i).^2);
-    r(:,i)=sqrt(Xr(:,i).^2 + Yr(:,i).^2);
-end
-
-segmentLength = 1;
-
-xpoint = zeros(1,timeSteps);
-ypoint = zeros(1,timeSteps);
-
-for i = 1:timeSteps
-    area = 0;
-    areax = 0;
-    areay = 0;
-    for segNum = 1:pnr
-        area = area + segmentLength*(Yr(segNum,i) - Yl(segNum,i));
-        areax = areax + Xm(segNum,i)*(Yr(segNum,i) - Yl(segNum,i));
-        areay = areay + 0.5*(Yr(segNum,i).^2 - Yl(segNum,i).^2);
-    end
-    xpoint(i) = areax/area;
-    ypoint(i) = areay/area;
-    fprintf('For time %d, the area is %0.3f\n',i,area);
-    fprintf('For time %d, the point is (%0.2f,%0.2f)\n',i,xpoint(i),ypoint(i));
-end
-
-figure(1);
-dt = 0.025;
-xvel = zeros(1,timeSteps);
-yvel = zeros(1,timeSteps);
+%RED CURVES
+%[xpos1,ypos1,xCenterMass1,yCenterMass1,xvel1,yvel1] = formatPositionFile('~/testForcing/fort.38');
 
 for i = 1:timeSteps
     clf('reset')
-    
-    plot(Xm(:,i),Ym(:,i))
+    plot(xpos{1}(:,i),ypos{1}(:,i),'b')
     hold on
-    plot(Xn(:,i),Yn(:,i))
-    plot(Xl(:,i),Yl(:,i)) 
-    plot(Xr(:,i),Yr(:,i))
+    plot(xpos{2}(:,i),ypos{2}(:,i),'b')
+    plot(xpos{3}(:,i),ypos{3}(:,i),'b') 
+    plot(xpos{4}(:,i),ypos{4}(:,i),'b')
+    
+%     plot(xpos1{1}(:,i),ypos1{1}(:,i),'r')
+%     plot(xpos1{2}(:,i),ypos1{2}(:,i),'r')
+%     plot(xpos1{3}(:,i),ypos1{3}(:,i),'r')
+%     plot(xpos1{4}(:,i),ypos1{4}(:,i),'r')
+    
     axis([-20 20 0 12])
-    scatter(xpoint(i),ypoint(i));
-    if(i>1 && i<timeSteps)
-        xvel(i) = (xpoint(i+1)-xpoint(i-1))/(2*dt);
-        yvel(i) = (ypoint(i+1)-ypoint(i-1))/(2*dt);
-        quiver(xpoint(i),ypoint(i),xvel(i),yvel(i),'MaxHeadSize',0.15,'AlignVertexCenters','on','LineWidth',1.0);
-    elseif(i == timeSteps)
-        quiver(xpoint(i-1),ypoint(i-1),xvel(i-1),yvel(i-1),'MaxHeadSize',0.15,'AlignVertexCenter','on','LineWidth',1.0);
-    end
+    scatter(xCenterMass(i),yCenterMass(i),'b');
+    quiver(xCenterMass(i),yCenterMass(i),xvel(i),yvel(i),'Color','b','MaxHeadSize',0.15,'AlignVertexCenters','on','LineWidth',1.0);
+    
+%     scatter(xCenterMass1(i),yCenterMass1(i),'r');
+%     quiver(xCenterMass1(i),yCenterMass1(i),xvel1(i),yvel1(i),'Color','r','MaxHeadSize',0.15,'AlignVertexCenters','on','LineWidth',1.0);
+    
     title(sprintf('Timestep is: %d',i));
-    pause(.1)
+    pause(.01)
 end
-plot(xpoint,ypoint);
+plot(xCenterMass,yCenterMass,'b');
+% plot(xCenterMass1,yCenterMass1,'r');
