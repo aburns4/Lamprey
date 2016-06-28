@@ -20,7 +20,7 @@ lambda_a = (-1*log(0.05))^(-1);
 lambda_d = (-1*log(0.02))^(-1);
 omega_f = 1; %Forcing frequency
 
-n = 1; %Number of oscillators
+n = 20; %Number of oscillators
 m = 0; %Forcing position
 dt = 0.001; %Time step
 
@@ -36,13 +36,13 @@ options=odeset('RelTol',1e-4,'AbsTol',1e-7);
 %rows are of r and columns are [L to C, E to C, other]
 
 alpha_r = zeros(2*n-1,3);
-for r = 1:(2*n-1)
-    k = r-n;
-    alpha_r(r,:)=str(Aa,Ad,lambda_a,lambda_d,k);
-end
-    
+% % for r = 1:(2*n-1)
+% %     k = r-n;
+% %     alpha_r(r,:)=str(Aa,Ad,lambda_a,lambda_d,k);
+% % end
 
-[T,Y] = ode45(@neuralFunc,(0:dt:10),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
+
+alpha_r = [T,Y] = ode45(@neuralFunc,(0:dt:10),v_0,options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 [T,Y] = ode45(@neuralFunc,(0:dt:3),Y(end,:),options,n,m,G_R,G_T,G_0,V_syn,G_f,V_synec,sigma,alpha_f,alpha_r,omega_f);
 
 % plot(T,Y(:,1),'b');
